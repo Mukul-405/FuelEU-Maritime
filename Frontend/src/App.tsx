@@ -1,10 +1,24 @@
-import Dashboard from './components/Dashboard'
-import './index.css'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Layout } from './adapters/ui/components/Layout';
+import { RoutesPage } from './adapters/ui/pages/RoutesPage';
+import { ComparePage } from './adapters/ui/pages/ComparePage';
+import { BankingPage } from './adapters/ui/pages/BankingPage';
+import { PoolingPage } from './adapters/ui/pages/PoolingPage';
 
 function App() {
   return (
-    <Dashboard />
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Navigate to="/routes" replace />} />
+          <Route path="routes" element={<RoutesPage />} />
+          <Route path="compare" element={<ComparePage />} />
+          <Route path="banking" element={<BankingPage />} />
+          <Route path="pooling" element={<PoolingPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
