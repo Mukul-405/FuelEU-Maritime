@@ -86,9 +86,9 @@ export const PoolingPage = () => {
             <Users size={28} /> {selectedMembers.length}
           </div>
         </div>
-        <div className="bg-neutral-800 border border-neutral-700 rounded-2xl p-6 shadow-xl flex flex-col items-center justify-center col-span-1 lg:col-span-2">
+        <div className="bg-neutral-800 border border-neutral-700 rounded-2xl p-6 shadow-xl flex flex-col items-center justify-center col-span-1 lg:col-span-2" role="status" aria-label={`Pool Sum Indicator: ${selectedMembers.length === 0 ? 'No ships selected' : poolValid ? 'Valid pool configuration' : 'Invalid pool configuration'}`}>
           <div className="text-neutral-400 text-sm font-medium uppercase tracking-wider mb-2">Pool Sum Indicator</div>
-          <div className={`text-3xl font-black flex items-center gap-3 ${poolValid ? 'text-emerald-400' : 'text-rose-400'}`}>
+          <div className={`text-3xl font-black flex items-center gap-3 ${poolValid ? 'text-emerald-400' : 'text-rose-400'}`} aria-live="polite">
             {poolValid ? <CheckCircle size={28} /> : <AlertTriangle size={28} />}
             {selectedMembers.length === 0 ? '—' : poolSum.toLocaleString(undefined, { maximumFractionDigits: 0 })}
             <span className="text-sm font-normal text-neutral-500">gCO₂eq</span>
@@ -142,7 +142,7 @@ export const PoolingPage = () => {
           <button onClick={addShipRow} className="text-blue-400 hover:text-blue-300 text-sm font-medium flex items-center gap-1.5 transition-colors">
             <Plus size={16} /> Add Ship
           </button>
-          <button onClick={handleSubmitPool} disabled={submitting || selectedMembers.length === 0 || !poolValid} className="bg-blue-600 hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-medium px-6 py-2.5 rounded-lg transition-all">
+          <button onClick={handleSubmitPool} disabled={submitting || selectedMembers.length === 0 || !poolValid} aria-label={!poolValid ? 'Cannot create pool: sum is negative' : 'Create pool'} className="bg-blue-600 hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-medium px-6 py-2.5 rounded-lg transition-all">
             {submitting ? 'Creating Pool...' : 'Create Pool'}
           </button>
         </div>
