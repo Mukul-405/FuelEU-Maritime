@@ -1,0 +1,116 @@
+{
+  "routes": [
+    {
+      "column_name": "id",
+      "data_type": "integer"
+    },
+    {
+      "column_name": "route_id",
+      "data_type": "character varying"
+    },
+    {
+      "column_name": "vessel_type",
+      "data_type": "character varying"
+    },
+    {
+      "column_name": "fuel_type",
+      "data_type": "character varying"
+    },
+    {
+      "column_name": "year",
+      "data_type": "integer"
+    },
+    {
+      "column_name": "ghg_intensity",
+      "data_type": "numeric"
+    },
+    {
+      "column_name": "fuel_consumption",
+      "data_type": "numeric"
+    },
+    {
+      "column_name": "distance",
+      "data_type": "numeric"
+    },
+    {
+      "column_name": "total_emissions",
+      "data_type": "numeric"
+    },
+    {
+      "column_name": "is_baseline",
+      "data_type": "boolean"
+    }
+  ],
+  "ship_compliance": [
+    {
+      "column_name": "id",
+      "data_type": "integer"
+    },
+    {
+      "column_name": "ship_id",
+      "data_type": "character varying"
+    },
+    {
+      "column_name": "year",
+      "data_type": "integer"
+    },
+    {
+      "column_name": "cb_gco2eq",
+      "data_type": "numeric"
+    }
+  ],
+  "bank_entries": [
+    {
+      "column_name": "id",
+      "data_type": "integer"
+    },
+    {
+      "column_name": "ship_id",
+      "data_type": "character varying"
+    },
+    {
+      "column_name": "year",
+      "data_type": "integer"
+    },
+    {
+      "column_name": "amount_gco2eq",
+      "data_type": "numeric"
+    }
+  ],
+  "pools": [
+    {
+      "column_name": "id",
+      "data_type": "integer"
+    },
+    {
+      "column_name": "year",
+      "data_type": "integer"
+    },
+    {
+      "column_name": "created_at",
+      "data_type": "timestamp without time zone"
+    }
+  ],
+  "pool_members": [
+    {
+      "column_name": "id",
+      "data_type": "integer"
+    },
+    {
+      "column_name": "pool_id",
+      "data_type": "integer"
+    },
+    {
+      "column_name": "ship_id",
+      "data_type": "character varying"
+    },
+    {
+      "column_name": "cb_before",
+      "data_type": "numeric"
+    },
+    {
+      "column_name": "cb_after",
+      "data_type": "numeric"
+    }
+  ]
+}
