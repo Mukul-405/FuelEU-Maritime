@@ -34,35 +34,35 @@ export const RoutesTable: React.FC<RoutesTableProps> = ({ routes, onBaselineSet 
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-8">
       {/* Filters */}
-      <div className="flex flex-wrap lg:flex-nowrap gap-4 bg-neutral-800/50 p-4 rounded-xl border border-neutral-700">
-        <div className="flex flex-col flex-1">
-          <label className="text-xs uppercase tracking-wider text-neutral-400 mb-2 font-medium">Vessel Type</label>
+      <div className="flex flex-wrap lg:flex-nowrap gap-4 bg-white/[0.02] p-5 rounded-2xl border border-white/10 shadow-inner">
+        <div className="flex flex-col flex-1 relative group">
+          <label className="text-[10px] uppercase tracking-widest text-neutral-400/80 mb-2 font-semibold ml-1">Vessel Type</label>
           <input
             type="text"
             placeholder="e.g. Container"
-            className="bg-neutral-900 border border-neutral-700 rounded-lg px-3 py-2.5 text-white outline-none focus:border-blue-500 transition-colors"
+            className="bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all placeholder:text-neutral-600 font-medium"
             value={vesselFilter}
             onChange={(e) => setVesselFilter(e.target.value)}
           />
         </div>
-        <div className="flex flex-col flex-1">
-          <label className="text-xs uppercase tracking-wider text-neutral-400 mb-2 font-medium">Fuel Type</label>
+        <div className="flex flex-col flex-1 relative group">
+          <label className="text-[10px] uppercase tracking-widest text-neutral-400/80 mb-2 font-semibold ml-1">Fuel Type</label>
           <input
             type="text"
             placeholder="e.g. HFO"
-            className="bg-neutral-900 border border-neutral-700 rounded-lg px-3 py-2.5 text-white outline-none focus:border-blue-500 transition-colors"
+            className="bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/20 transition-all placeholder:text-neutral-600 font-medium"
             value={fuelFilter}
             onChange={(e) => setFuelFilter(e.target.value)}
           />
         </div>
-        <div className="flex flex-col flex-1">
-          <label className="text-xs uppercase tracking-wider text-neutral-400 mb-2 font-medium">Year</label>
+        <div className="flex flex-col flex-1 relative group">
+          <label className="text-[10px] uppercase tracking-widest text-neutral-400/80 mb-2 font-semibold ml-1">Year</label>
           <input
             type="number"
             placeholder="e.g. 2025"
-            className="bg-neutral-900 border border-neutral-700 rounded-lg px-3 py-2.5 text-white outline-none focus:border-blue-500 transition-colors"
+            className="bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20 transition-all placeholder:text-neutral-600 font-medium"
             value={yearFilter}
             onChange={(e) => setYearFilter(e.target.value)}
           />
@@ -70,40 +70,50 @@ export const RoutesTable: React.FC<RoutesTableProps> = ({ routes, onBaselineSet 
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto border border-neutral-700 rounded-xl bg-neutral-900">
+      <div className="overflow-x-auto rounded-2xl bg-black/20 border border-white/5 backdrop-blur-sm">
         <table className="w-full text-left border-collapse min-w-[900px]">
           <thead>
-            <tr className="bg-neutral-950 border-b border-neutral-700 text-neutral-400 text-sm">
-              <th className="p-4 font-semibold">Route ID</th>
-              <th className="p-4 font-semibold">Vessel Type</th>
-              <th className="p-4 font-semibold">Fuel Type</th>
-              <th className="p-4 font-semibold">Year</th>
-              <th className="p-4 font-semibold">GHG Intensity</th>
-              <th className="p-4 font-semibold">Distance</th>
-              <th className="p-4 font-semibold">Baseline</th>
+            <tr className="bg-white/[0.03] border-b border-white/10 text-neutral-400 text-xs uppercase tracking-wider font-semibold">
+              <th className="px-6 py-5 rounded-tl-2xl">Route ID</th>
+              <th className="px-6 py-5">Vessel Type</th>
+              <th className="px-6 py-5">Fuel Type</th>
+              <th className="px-6 py-5">Year</th>
+              <th className="px-6 py-5">GHG Intensity</th>
+              <th className="px-6 py-5">Distance</th>
+              <th className="px-6 py-5 text-center rounded-tr-2xl">Baseline</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-white/[0.06]">
             {filtered.map((r) => (
-              <tr key={r.route_id} className="border-b border-neutral-800 hover:bg-neutral-800/80 transition-colors">
-                <td className="p-4 font-medium text-white font-mono">{r.route_id}</td>
-                <td className="p-4 text-neutral-300">{r.vessel_type}</td>
-                <td className="p-4 text-neutral-300">{r.fuel_type}</td>
-                <td className="p-4 text-neutral-300">{r.year}</td>
-                <td className="p-4 text-neutral-300 font-mono">{r.ghg_intensity.toFixed(2)} <span className="text-xs text-neutral-500">gCO2e/MJ</span></td>
-                <td className="p-4 text-neutral-300 font-mono">{r.distance} <span className="text-xs text-neutral-500">NM</span></td>
-                <td className="p-4">
+              <tr key={r.route_id} className="group hover:bg-white/[0.04] transition-colors duration-200">
+                <td className="px-6 py-4 font-bold text-white font-mono flex items-center gap-3">
+                  <span className="w-8 h-8 rounded-full bg-blue-500/10 text-blue-400 flex items-center justify-center text-xs">ID</span>
+                  {r.route_id}
+                </td>
+                <td className="px-6 py-4 text-neutral-300 font-medium">{r.vessel_type}</td>
+                <td className="px-6 py-4">
+                  <span className="bg-neutral-800 text-neutral-300 text-xs px-2.5 py-1 rounded-md font-semibold border border-neutral-700 tracking-wide">{r.fuel_type}</span>
+                </td>
+                <td className="px-6 py-4 text-neutral-300 font-medium">{r.year}</td>
+                <td className="px-6 py-4 text-white font-mono font-medium">
+                  {r.ghg_intensity.toFixed(2)} <span className="text-[10px] text-neutral-500 ml-1 uppercase">gCO₂e/MJ</span>
+                </td>
+                <td className="px-6 py-4 text-white font-mono font-medium">
+                  {r.distance.toLocaleString()} <span className="text-[10px] text-neutral-500 ml-1">NM</span>
+                </td>
+                <td className="px-6 py-4 flex justify-center">
                   {r.is_baseline ? (
-                    <span className="inline-flex items-center gap-1.5 text-emerald-400 text-sm font-medium bg-emerald-400/10 px-3 py-1.5 rounded-full border border-emerald-400/20">
-                      <CheckCircle size={16} /> Baseline
+                    <span className="inline-flex items-center gap-1.5 text-emerald-400 text-xs font-bold uppercase tracking-wider bg-emerald-400/10 px-4 py-2 rounded-xl border border-emerald-400/20 shadow-[0_0_15px_rgba(52,211,153,0.1)]">
+                      <CheckCircle size={14} /> Active
                     </span>
                   ) : (
                     <button
                       onClick={() => r.id != null && handleSetBaseline(r.id)}
                       disabled={loadingId === r.id || r.id == null}
-                      className="bg-neutral-800 hover:bg-blue-600 disabled:opacity-50 text-white border border-neutral-600 hover:border-blue-500 text-sm font-medium px-4 py-1.5 rounded-lg transition-all"
+                      className="group/btn relative overflow-hidden bg-white/5 hover:bg-transparent disabled:opacity-50 text-white text-xs font-semibold uppercase tracking-wider border border-white/10 hover:border-transparent px-5 py-2 rounded-xl transition-all shadow-lg"
                     >
-                      {loadingId === r.id ? 'Setting...' : 'Set Baseline'}
+                      <span className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300" />
+                      <span className="relative z-10">{loadingId === r.id ? 'Setting...' : 'Set Baseline'}</span>
                     </button>
                   )}
                 </td>
@@ -111,8 +121,12 @@ export const RoutesTable: React.FC<RoutesTableProps> = ({ routes, onBaselineSet 
             ))}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={7} className="p-12 text-center text-neutral-500">
-                  No routes match the selected filters.
+                <td colSpan={7} className="px-6 py-16 text-center text-neutral-500">
+                  <div className="flex flex-col items-center justify-center gap-2">
+                    <span className="text-3xl opacity-50">🔍</span>
+                    <span className="font-medium">No routes match your filters</span>
+                    <span className="text-sm text-neutral-600">Try adjusting the vessel, fuel, or year filters.</span>
+                  </div>
                 </td>
               </tr>
             )}
