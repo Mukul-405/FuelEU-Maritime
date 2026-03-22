@@ -1,0 +1,13 @@
+(node:34144) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS tests/adapters/in/express/BankingApi.test.ts
+  Banking and Adjusted CB API Integration Tests
+    √ POST /banking/bank should bank surplus successfully (74 ms)
+    √ POST /banking/apply should apply banked surplus to improve deficit/balance (22 ms)
+    √ POST /banking/apply should fail if insufficient funds are available in the bank (9 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       3 passed, 3 total
+Snapshots:   0 total
+Time:        3.811 s
+Ran all test suites matching tests/adapters/in/express/BankingApi.test.ts.

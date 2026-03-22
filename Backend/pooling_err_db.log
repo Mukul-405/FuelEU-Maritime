@@ -1,0 +1,67 @@
+  console.error
+    Error saving pool transaction: error: invalid input syntax for type integer: "cecfc43f-4ab0-48fb-bfda-0f0c3c742bbc"
+        at D:\varuna-marine\FuelEU-Maritime\Backend\node_modules\pg\lib\client.js:631:17
+        at processTicksAndRejections (node:internal/process/task_queues:103:5)
+        at PgComplianceRepository.savePool (D:\varuna-marine\FuelEU-Maritime\Backend\src\adapters\outbound\postgres\PgComplianceRepository.ts:75:13)
+        at CreatePoolUseCase.execute (D:\varuna-marine\FuelEU-Maritime\Backend\src\core\application\CreatePoolUseCase.ts:43:9)
+        at NewPoolController.createPool (D:\varuna-marine\FuelEU-Maritime\Backend\src\infrastructure\adapters\in\web\NewPoolController.ts:16:32) {
+      length: 179,
+      severity: 'ERROR',
+      code: '22P02',
+      detail: undefined,
+      hint: undefined,
+      position: undefined,
+      internalPosition: undefined,
+      internalQuery: undefined,
+      where: "unnamed portal parameter $1 = '...'",
+      schema: undefined,
+      table: undefined,
+      column: undefined,
+      dataType: undefined,
+      constraint: undefined,
+      file: 'numutils.c',
+      line: '618',
+      routine: 'pg_strtoint32_safe'
+    }
+
+    [0m [90m 102 |[39m         } [36mcatch[39m (error) {
+     [90m 103 |[39m             [36mawait[39m client[33m.[39mquery([32m'ROLLBACK'[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 104 |[39m             console[33m.[39merror([32m'Error saving pool transaction:'[39m[33m,[39m error)[33m;[39m
+     [90m     |[39m                     [31m[1m^[22m[39m
+     [90m 105 |[39m             [36mthrow[39m [36mnew[39m [33mError[39m([32m'Failed to save pool due to transaction rollback.'[39m)[33m;[39m
+     [90m 106 |[39m         } [36mfinally[39m {
+     [90m 107 |[39m             client[33m.[39mrelease()[33m;[39m[0m
+
+      at PgComplianceRepository.savePool (src/adapters/outbound/postgres/PgComplianceRepository.ts:104:21)
+      at CreatePoolUseCase.execute (src/core/application/CreatePoolUseCase.ts:43:9)
+      at NewPoolController.createPool (src/infrastructure/adapters/in/web/NewPoolController.ts:16:32)
+
+(node:11708) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+FAIL tests/adapters/in/express/PoolingApi.test.ts
+  Pooling API Integration Tests
+    × POST /pools should handle a valid pool creation correctly (164 ms)
+    √ POST /pools should return 400 error if pool configuration is invalid (sum < 0) (5 ms)
+
+  ● Pooling API Integration Tests › POST /pools should handle a valid pool creation correctly
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 400
+
+    [0m [90m 21 |[39m             [33m.[39msend(payload)[33m;[39m
+     [90m 22 |[39m
+    [31m[1m>[22m[39m[90m 23 |[39m         expect(response[33m.[39mstatus)[33m.[39mtoBe([35m200[39m)[33m;[39m
+     [90m    |[39m                                 [31m[1m^[22m[39m
+     [90m 24 |[39m         expect(response[33m.[39mbody[33m.[39mpool_id)[33m.[39mtoBeDefined()[33m;[39m
+     [90m 25 |[39m         
+     [90m 26 |[39m         [90m// Members returned[39m[0m
+
+      at Object.<anonymous> (tests/adapters/in/express/PoolingApi.test.ts:23:33)
+
+Test Suites: 1 failed, 1 total
+Tests:       1 failed, 1 passed, 2 total
+Snapshots:   0 total
+Time:        2.183 s, estimated 5 s
+Ran all test suites matching tests/adapters/in/express/PoolingApi.test.ts.
