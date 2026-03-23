@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { routeApiClient } from '../../infrastructure/RouteApiClient';
 import type { BankRecord } from '../../../core/domain/BankingModels';
 import { canBankSurplus } from '../../../core/domain/BankingModels';
-import { Banknote, ArrowDownCircle, ArrowUpCircle, AlertTriangle } from 'lucide-react';
+import { Banknote, ArrowDownCircle, ArrowUpCircle, AlertTriangle, CheckCircle } from 'lucide-react';
 
 export const BankingPage = () => {
   // CB Calculation inputs
@@ -23,6 +23,7 @@ export const BankingPage = () => {
   // Status
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [txResult, setTxResult] = useState<{ type: string; cbBefore: number; applied: number; cbAfter: number } | null>(null);
 
   const clearMessage = () => setTimeout(() => setMessage(null), 4000);
 
@@ -61,10 +62,17 @@ export const BankingPage = () => {
   const handleBank = async () => {
     if (!shipId || !year || !bankAmount) return;
     setLoading(true);
+    setTxResult(null);
     try {
-      await routeApiClient.bankSurplus(shipId, parseInt(year), parseFloat(bankAmount));
+      const amount = parseFloat(bankAmount);
+      const before = currentCb || 0;
+      await routeApiClient.bankSurplus(shipId, parseInt(year), amount);
       setMessage({ type: 'success', text: 'Surplus banked successfully!' });
       clearMessage();
+      
+      setTxResult({ type: 'Bank', cbBefore: before, applied: amount, cbAfter: before - amount });
+      if (currentCb !== null) setCurrentCb(before - amount);
+
       setBankAmount('');
       handleFetchRecords();
     } catch (err: unknown) {
@@ -79,10 +87,17 @@ export const BankingPage = () => {
   const handleApply = async () => {
     if (!shipId || !year || !applyAmount) return;
     setLoading(true);
+    setTxResult(null);
     try {
-      await routeApiClient.applyBankedSurplus(shipId, parseInt(year), parseFloat(applyAmount));
+      const amount = parseFloat(applyAmount);
+      const before = currentCb || 0;
+      await routeApiClient.applyBankedSurplus(shipId, parseInt(year), amount);
       setMessage({ type: 'success', text: 'Banked surplus applied successfully!' });
       clearMessage();
+
+      setTxResult({ type: 'Apply', cbBefore: before, applied: amount, cbAfter: before + amount });
+      if (currentCb !== null) setCurrentCb(before + amount);
+
       setApplyAmount('');
       handleFetchRecords();
     } catch (err: unknown) {
@@ -105,6 +120,30 @@ export const BankingPage = () => {
       {message && (
         <div className={`p-4 rounded-xl border text-sm font-medium ${message.type === 'success' ? 'bg-emerald-400/10 border-emerald-400/30 text-emerald-400' : 'bg-rose-400/10 border-rose-400/30 text-rose-400'}`}>
           {message.text}
+        </div>
+      )}
+
+      {/* Transaction Result / KPIs */}
+      {txResult && (
+        <div className="bg-neutral-800 border border-emerald-500/30 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-blue-500" />
+          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-white">
+            <CheckCircle className="text-emerald-500" size={24} /> Transaction KPIs ({txResult.type})
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-neutral-900 border border-neutral-700/50 rounded-xl p-4 flex flex-col items-center">
+              <span className="text-xs uppercase tracking-wider text-neutral-400 mb-1 font-medium">CB Before</span>
+              <span className="text-xl font-mono text-neutral-300">{txResult.cbBefore.toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
+            </div>
+            <div className="bg-neutral-900 border border-neutral-700/50 rounded-xl p-4 flex flex-col items-center">
+              <span className="text-xs uppercase tracking-wider text-neutral-400 mb-1 font-medium">{txResult.type === 'Bank' ? 'Banked Amount' : 'Applied Amount'}</span>
+              <span className="text-xl font-mono text-blue-400">{txResult.applied.toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
+            </div>
+            <div className="bg-neutral-900 border border-neutral-700/50 rounded-xl p-4 flex flex-col items-center">
+              <span className="text-xs uppercase tracking-wider text-neutral-400 mb-1 font-medium">CB After</span>
+              <span className="text-xl font-mono text-emerald-400">{txResult.cbAfter.toLocaleString(undefined, { maximumFractionDigits: 0 })}</span>
+            </div>
+          </div>
         </div>
       )}
 

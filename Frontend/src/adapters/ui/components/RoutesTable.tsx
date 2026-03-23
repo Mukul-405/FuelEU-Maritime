@@ -79,7 +79,9 @@ export const RoutesTable: React.FC<RoutesTableProps> = ({ routes, onBaselineSet 
               <th className="px-6 py-5">Fuel Type</th>
               <th className="px-6 py-5">Year</th>
               <th className="px-6 py-5">GHG Intensity</th>
-              <th className="px-6 py-5">Distance</th>
+              <th className="px-6 py-5">Fuel Cons. (t)</th>
+              <th className="px-6 py-5">Distance (km)</th>
+              <th className="px-6 py-5">Total Emis. (t)</th>
               <th className="px-6 py-5 text-center rounded-tr-2xl">Baseline</th>
             </tr>
           </thead>
@@ -99,7 +101,13 @@ export const RoutesTable: React.FC<RoutesTableProps> = ({ routes, onBaselineSet 
                   {r.ghg_intensity.toFixed(2)} <span className="text-[10px] text-neutral-500 ml-1 uppercase">gCO₂e/MJ</span>
                 </td>
                 <td className="px-6 py-4 text-white font-mono font-medium">
-                  {r.distance.toLocaleString()} <span className="text-[10px] text-neutral-500 ml-1">NM</span>
+                  {r.fuel_consumption.toLocaleString()}
+                </td>
+                <td className="px-6 py-4 text-white font-mono font-medium">
+                  {r.distance.toLocaleString()} <span className="text-[10px] text-neutral-500 ml-1">KM</span>
+                </td>
+                <td className="px-6 py-4 text-white font-mono font-medium">
+                  {r.total_emissions.toLocaleString()}
                 </td>
                 <td className="px-6 py-4 flex justify-center">
                   {r.is_baseline ? (
@@ -121,7 +129,7 @@ export const RoutesTable: React.FC<RoutesTableProps> = ({ routes, onBaselineSet 
             ))}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={7} className="px-6 py-16 text-center text-neutral-500">
+                <td colSpan={9} className="px-6 py-16 text-center text-neutral-500">
                   <div className="flex flex-col items-center justify-center gap-2">
                     <span className="text-3xl opacity-50">🔍</span>
                     <span className="font-medium">No routes match your filters</span>

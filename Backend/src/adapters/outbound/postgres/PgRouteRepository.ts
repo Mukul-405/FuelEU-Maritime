@@ -41,4 +41,19 @@ export class PgRouteRepository implements IRouteRepository {
             throw new Error('Failed to fetch routes');
         }
     }
+
+    async setBaseline(id: number): Promise<void> {
+        try {
+            // Remove existing baseline flags
+            await dbPool.query(`UPDATE routes SET is_baseline = false WHERE is_baseline = true`);
+            // Set the new baseline
+            const result = await dbPool.query(`UPDATE routes SET is_baseline = true WHERE id = $1`, [id]);
+            if (result.rowCount === 0) {
+                throw new Error(`Route with id ${id} not found`);
+            }
+        } catch (error) {
+            console.error('Error setting baseline in Postgres:', error);
+            throw error;
+        }
+    }
 }

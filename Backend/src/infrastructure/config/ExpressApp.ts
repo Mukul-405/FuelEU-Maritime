@@ -34,6 +34,7 @@ import { BankSurplusUseCase } from "../../core/application/BankSurplusUseCase";
 import { ApplyBankedSurplusUseCase } from "../../core/application/ApplyBankedSurplusUseCase";
 import { GetBankRecordsUseCase } from "../../core/application/GetBankRecordsUseCase";
 import { CreatePoolUseCase } from "../../core/application/CreatePoolUseCase";
+import { SetBaselineUseCase } from "../../core/application/SetBaselineUseCase";
 
 import { NewRouteController } from "../adapters/in/web/NewRouteController";
 import { NewComplianceController } from "../adapters/in/web/NewComplianceController";
@@ -55,7 +56,7 @@ const applyBankedSurplusUC = new ApplyBankedSurplusUseCase(newComplianceRepo);
 const getBankRecordsUC = new GetBankRecordsUseCase(newComplianceRepo);
 const createPoolUC = new CreatePoolUseCase(newComplianceRepo);
 
-const newRouteCtrl = new NewRouteController(getRoutesUC, getRouteComparisonUC);
+const newRouteCtrl = new NewRouteController(getRoutesUC, getRouteComparisonUC, new SetBaselineUseCase(newRouteRepo));
 const newComplianceCtrl = new NewComplianceController(calculateCbUC, getAdjustedCbUC);
 const newBankCtrl = new NewBankController(bankSurplusUC, applyBankedSurplusUC, getBankRecordsUC);
 const newPoolCtrl = new NewPoolController(createPoolUC);
@@ -80,6 +81,7 @@ const complianceCtrl = new ComplianceController(complianceUC);
 // Endpoints
 app.get("/routes/comparison", (req, res) => newRouteCtrl.getComparison(req, res));
 app.get("/routes", (req, res) => newRouteCtrl.getRoutes(req, res));
+app.post("/routes/:id/baseline", (req, res) => newRouteCtrl.setBaseline(req, res));
 
 app.get("/compliance/cb", (req, res) => newComplianceCtrl.getComplianceCb(req, res));
 app.get("/compliance/adjusted-cb", (req, res) => newComplianceCtrl.getAdjustedCb(req, res));
